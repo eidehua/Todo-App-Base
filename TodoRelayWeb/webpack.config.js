@@ -18,7 +18,21 @@ module.exports = (env, { mode }) => ({
         include: /node_modules/,
         type: 'javascript/auto',
       },
-      { test: /\.js$/, exclude: /node_modules/, use: 'babel-loader' },
+{
+    test: /\.jsx?$/,
+    exclude: /node_modules/,
+    use: [
+      {
+        loader: 'babel-loader',
+        options: {
+          presets: ['@babel/preset-env','@babel/preset-react']
+        }
+      }
+    ],
+  },
+  {test: /\.(graphql|gql)$/,
+      exclude: /node_modules/,
+      use: 'graphql-tag/loader',},
       { test: /\.css$/, use: ['style-loader', 'css-loader'] },
     ],
   },
