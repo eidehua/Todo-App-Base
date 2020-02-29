@@ -75,11 +75,7 @@ export function markAllTodos(complete) {
 }
 
 export function removeTodo(id) {
-  const todoIndex = todoIdsByUser[VIEWER_ID].indexOf(id);
-  if (todoIndex !== -1) {
-    todoIdsByUser[VIEWER_ID].splice(todoIndex, 1);
-  }
-  delete todosById[id];
+  // add remove functionality
 }
 
 export function removeCompletedTodos() {

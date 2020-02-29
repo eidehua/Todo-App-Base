@@ -23,7 +23,7 @@ import {
 import {
   Todo,
   User,
-  addTodo,
+  addTodo, // mocks adding todo functionality to a DB
   changeTodoStatus,
   getTodo,
   getTodos,
@@ -31,7 +31,6 @@ import {
   getViewer,
   markAllTodos,
   removeCompletedTodos,
-  removeTodo,
   renameTodo
 } from './database';
 
@@ -57,6 +56,7 @@ const { nodeInterface, nodeField } = nodeDefinitions(
   }
 );
 
+// Creates the graphql object that represents a Todo
 const GraphQLTodo = new GraphQLObjectType({
   name: 'Todo',
   fields: {
@@ -72,6 +72,7 @@ const {
   edgeType: GraphQLTodoEdge
 } = connectionDefinitions({ nodeType: GraphQLTodo });
 
+// A User with Todos
 const GraphQLUser = new GraphQLObjectType({
   name: 'User',
   fields: {
@@ -111,10 +112,11 @@ const GraphQLRoot = new GraphQLObjectType({
   }
 });
 
+// Mutation Client-Side can call to update the server-side with a new todo
 const GraphQLAddTodoMutation = mutationWithClientMutationId({
   name: 'AddTodo',
   inputFields: {
-    text: { type: new GraphQLNonNull(GraphQLString) }
+    text: { type: new GraphQLNonNull(GraphQLString) } // input text for the todo
   },
   outputFields: {
     viewer: {
@@ -133,7 +135,7 @@ const GraphQLAddTodoMutation = mutationWithClientMutationId({
     }
   },
   mutateAndGetPayload: ({ text }) => {
-    const todoId = addTodo(text);
+    const todoId = addTodo(text); // calls the server side function here 
     return { todoId };
   }
 });
@@ -205,27 +207,7 @@ const GraphQLRemoveCompletedTodosMutation = mutationWithClientMutationId(
   }
 );
 
-const GraphQLRemoveTodoMutation = mutationWithClientMutationId({
-  name: 'RemoveTodo',
-  inputFields: {
-    id: { type: new GraphQLNonNull(GraphQLID) }
-  },
-  outputFields: {
-    viewer: {
-      type: GraphQLUser,
-      resolve: getViewer
-    },
-    deletedId: {
-      type: GraphQLID,
-      resolve: ({ id }) => id
-    }
-  },
-  mutateAndGetPayload: ({ id }) => {
-    const { id: todoId } = fromGlobalId(id);
-    removeTodo(todoId);
-    return { id };
-  }
-});
+// add a remove todo mutation
 
 const GraphQLRenameTodoMutation = mutationWithClientMutationId({
   name: 'RenameTodo',
@@ -253,7 +235,6 @@ const GraphQLMutation = new GraphQLObjectType({
     changeTodoStatus: GraphQLChangeTodoStatusMutation,
     markAllTodos: GraphQLMarkAllTodosMutation,
     removeCompletedTodos: GraphQLRemoveCompletedTodosMutation,
-    removeTodo: GraphQLRemoveTodoMutation,
     renameTodo: GraphQLRenameTodoMutation
   }
 });

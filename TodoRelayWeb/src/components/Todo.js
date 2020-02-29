@@ -70,6 +70,7 @@ class Todo extends React.Component {
     const { isEditing } = this.state;
 
     /* eslint-disable jsx-a11y/label-has-for */
+    // add a button for remove Todo functionality (use className "destory")
     return (
       <li
         className={classNames({
@@ -85,7 +86,6 @@ class Todo extends React.Component {
             onChange={this.onCompleteChange}
           />
           <label onDoubleClick={this.onLabelDoubleClick}>{text}</label>
-          <button className="destroy" onClick={this.onDestroyClick} />
         </div>
 
         {!!this.state.isEditing && (

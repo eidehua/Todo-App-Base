@@ -15,6 +15,7 @@ import 'todomvc-common/base';
 import 'todomvc-common/base.css';
 import 'todomvc-app-css/index.css';
 
+// communicates with GraphQL backend
 const environment = new Environment({
   network: Network.create({ schema }),
   store: new Store(new RecordSource()),
